@@ -76,8 +76,8 @@
   </div>
 </template>
 <script setup>
-import {FwbA, FwbImg, FwbModal, FwbNavbarLink} from "flowbite-vue";
-import { MapPinIcon, ShoppingBagIcon, GlobeAltIcon, Bars3Icon } from "@heroicons/vue/24/solid";
+import {FwbA, FwbImg} from "flowbite-vue";
+import { MapPinIcon, ShoppingBagIcon, Bars3Icon } from "@heroicons/vue/24/solid";
 import noble_logo from '@/assets/noble.png'
 
 import { ref } from 'vue'
