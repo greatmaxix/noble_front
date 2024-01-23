@@ -7,14 +7,16 @@
       <div class="mt-4 grid grid-cols-3 mx-4">
         <div class="flex justify-start mt-5">
           <Bars3Icon class="h-6 cursor-pointer hover:ring-blue-500 hover:ring-2 rounded" @click="showLinks = !showLinks"/>
-          <GlobeAltIcon class="ml-2 h-6"/>
+          <LanguageSelector/>
         </div>
         <div class="flex justify-center">
-          <FwbImg
+          <FwbA href="/">
+            <FwbImg
               alt="Noble logo"
               class="w-[125px] h-[45px]"
               :src="noble_logo"
-          />
+            />
+          </FwbA>
         </div>
         <div class="w-full flex justify-end mt-5">
           <MapPinIcon class="h-6"/>
@@ -44,17 +46,19 @@
 
       <div class="mt-4 grid grid-cols-3 mx-4">
         <div class="flex justify-start ml-10">
-          <FwbImg
+          <FwbA href="/">
+            <FwbImg
               alt="Noble logo"
               class="w-[125px] h-[45px]"
               :src="noble_logo"
-          />
+            />
+          </FwbA>
         </div>
 
         <SearchButton/>
 
         <div class="flex justify-end mt-5 gap-6 mr-10">
-          <GlobeAltIcon class="h-7"/>
+          <LanguageSelector/>
           <MapPinIcon class="h-7"/>
           <ShoppingBagIcon class="h-7"/>
         </div>
@@ -78,19 +82,8 @@ import noble_logo from '@/assets/noble.png'
 
 import { ref } from 'vue'
 import SearchButton from "@/components/SearchButton.vue";
+import LanguageSelector from "@/components/LanguageSelector.vue";
 let showLinks = ref(false)
 const routes = ['brands', 'new_year', 'sets', 'table_serve', 'glass_and_bar', 'cutlery', 'decor_and_interior', 'kitchenware']
 
 </script>
-
-<style scoped>
-.link-transition-enter-active,
-.link-transition-leave-active {
-  transition: opacity 0.7s ease;
-}
-
-.link-transition-enter-from,
-.link-transition-leave-to {
-  opacity: 0;
-}
-</style>

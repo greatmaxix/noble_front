@@ -30,3 +30,17 @@
   --dp-range-between-dates-text-color: var(--dp-hover-text-color, #fff);
   --dp-range-between-border-color: var(--dp-hover-color, #fff);
 }
+
+.text-footer {
+  color: #EFEDDB;
+}
+
+.link-transition-enter-active,
+.link-transition-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+.link-transition-enter-from,
+.link-transition-leave-to {
+  opacity: 0;
+}

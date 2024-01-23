@@ -6,13 +6,16 @@ import router from '@/router'
 
 import { createI18n } from 'vue-i18n';
 import ru from '@/locales/ru.json';
+import en from '@/locales/en.json';
 
 const localeFromLocalStorage = localStorage.getItem('locale');
 
 const i18n = createI18n({
+    legacy: false,
     locale: localeFromLocalStorage || 'ru',
     messages: {
-        ru
+        ru,
+        en
     }
 });
 
