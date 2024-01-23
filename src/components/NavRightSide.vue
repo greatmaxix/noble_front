@@ -1,0 +1,96 @@
+<template>
+  <div>
+    <!--  Mobile view -->
+    <div class="md:hidden text-2xl">
+      <SearchButton/>
+
+      <div class="mt-4 grid grid-cols-3 mx-4">
+        <div class="flex justify-start mt-5">
+          <Bars3Icon class="h-6 cursor-pointer hover:ring-blue-500 hover:ring-2 rounded" @click="showLinks = !showLinks"/>
+          <GlobeAltIcon class="ml-2 h-6"/>
+        </div>
+        <div class="flex justify-center">
+          <FwbImg
+              alt="Noble logo"
+              class="w-[125px] h-[45px]"
+              :src="noble_logo"
+          />
+        </div>
+        <div class="w-full flex justify-end mt-5">
+          <MapPinIcon class="h-6"/>
+          <ShoppingBagIcon class="ml-2 h-6"/>
+        </div>
+      </div>
+
+      <Transition name="link-transition">
+        <div v-if="showLinks" @close="showLinks = false"
+             :class="{ 'opacity-0': !showLinks, 'opacity-100': showLinks }"
+             class="transition-opacity duration-300 ease-in-out bg-gray-200 my-3">
+          <div class="flex flex-col text-center">
+            <FwbA
+                v-for="route in routes" :key="route"
+                class="rounded-xl p-1 m-1 w-full"
+                :href="`/${route}`">
+              {{$t(route)}}
+            </FwbA>
+          </div>
+        </div>
+      </Transition>
+    </div>
+    <!--  Desktop view  -->
+    <div class="hidden md:block">
+
+      <div class="h-10 bg-gray-950"></div>
+
+      <div class="mt-4 grid grid-cols-3 mx-4">
+        <div class="flex justify-start ml-10">
+          <FwbImg
+              alt="Noble logo"
+              class="w-[125px] h-[45px]"
+              :src="noble_logo"
+          />
+        </div>
+
+        <SearchButton/>
+
+        <div class="flex justify-end mt-5 gap-6 mr-10">
+          <GlobeAltIcon class="h-7"/>
+          <MapPinIcon class="h-7"/>
+          <ShoppingBagIcon class="h-7"/>
+        </div>
+      </div>
+
+      <div class="w-full flex font-bold justify-around uppercase mt-2">
+        <FwbA
+            v-for="route in routes" :key="route"
+            class="rounded-xl p-1 m-1"
+            :href="`/${route}`">
+          {{$t(route)}}
+        </FwbA>
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+import {FwbA, FwbImg, FwbModal, FwbNavbarLink} from "flowbite-vue";
+import { MapPinIcon, ShoppingBagIcon, GlobeAltIcon, Bars3Icon } from "@heroicons/vue/24/solid";
+import noble_logo from '@/assets/noble.png'
+
+import { ref } from 'vue'
+import SearchButton from "@/components/SearchButton.vue";
+let showLinks = ref(false)
+const routes = ['brands', 'new_year', 'sets', 'table_serve', 'glass_and_bar', 'cutlery', 'decor_and_interior', 'kitchenware']
+
+</script>
+
+<style scoped>
+.link-transition-enter-active,
+.link-transition-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+.link-transition-enter-from,
+.link-transition-leave-to {
+  opacity: 0;
+}
+</style>
