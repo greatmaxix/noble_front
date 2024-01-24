@@ -19,7 +19,7 @@
           </p>
           <p>
             <span>
-              <span class="line-through">{{item.oldPrice}}тг</span>|{{item.price}}тг
+              <span class="line-through">{{currencyFormatter().format(item.oldPrice)}}тг</span>|{{currencyFormatter().format(item.price)}}тг
             </span>
           </p>
           <PrimaryBtn class="p-4 align-bottom	 uppercase font-semibold mt-3" :title="$t('add_to_cart')"/>
@@ -33,8 +33,10 @@
 
 import {defineComponent} from "vue";
 import PrimaryBtn from "@/components/PrimaryBtn.vue";
+import {currencyFormatter} from "@/utils.js";
 
 export default defineComponent({
+  methods: {currencyFormatter},
   components: {PrimaryBtn},
   props: {
     title: {
@@ -45,6 +47,6 @@ export default defineComponent({
       required: true,
       default: []
     }
-  }
+  },
 })
 </script>

@@ -18,12 +18,14 @@
   </div>
 </template>
 <script setup>
-import noble_logo from '@/assets/noble.png'
 import main from '@/assets/main.jpeg'
 import wedgwood from '@/assets/wedgwood.png'
 import {ref, onMounted, onUnmounted} from "vue";
 import PrimaryBtn from "@/components/PrimaryBtn.vue";
 import {FwbImg} from "flowbite-vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const pictures = [
   {
@@ -31,12 +33,6 @@ const pictures = [
     brand_src: wedgwood,
     alt: 'Some dish alt again'
   },
-  {
-    src: noble_logo,
-    brand_src: wedgwood,
-    alt: 'Some dish alt'
-  },
-
 ]
 
 let carouselIndex = 0
@@ -66,5 +62,6 @@ onUnmounted(() => {
 
 function handleMoreInfoClick(picObj) {
   console.log('handle more info clicked')
+  router.push({name: 'product', params: {id: 123}})
 }
 </script>
