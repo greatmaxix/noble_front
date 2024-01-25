@@ -1,8 +1,8 @@
 <template>
   <div class="md:px-10 my-5">
     <breadcrumbs :items="breadcrumbItems"/>
-    <div class="grid grid-cols-1 md:grid-cols-2">
-      <div id="images-container" class="flex flex-col">
+    <div class="grid grid-cols-1 md:grid-cols-3">
+      <div id="images-container" class="flex flex-col md:col-span-2">
         <div class="w-100 md:w-[300px] 2xl:w-[700px] h-[500px] m-5">
           <div class="relative image-container" :style="{ backgroundImage: `url(${mainImage})` }">
           </div>
@@ -36,19 +36,19 @@
               <span class="line-through">{{currencyFormatter().format(item.oldPrice)}}тг</span> | {{currencyFormatter().format(item.price)}}тг
             </span>
         </p>
-        <PrimaryBtn class="p-4 align-bottom	uppercase font-semibold mt-3 xl:w-1/3" :title="$t('add_to_cart')"/>
+        <PrimaryBtn class="p-4 align-bottom	uppercase font-semibold mt-3 xl:w-2/3" :title="$t('add_to_cart')"/>
 
-        <div class="xl:w-1/3 mt-10 border-t-2 border-b-2 border-gray-950 p-1">
+        <div class="xl:w-2/3 mt-10 border-t-2 border-b-2 border-gray-950 p-1">
           Описание
         </div>
         <h2 class="p-1 font-semibold">
           История
         </h2>
-        <p class="p-1 xl:w-1/3">
+        <p class="p-1 xl:w-2/3">
           Фарфор, выпускаемый фабрикой Tognana, подвергается тщательному лабораторному контролю, в сотрудничестве с Центром Керамики в Болонье и Экспериментальной Базой Стекла в Венеции. Отличные результаты тестов в индустриальных посудомоечных машинах, тестов на амбразивный и механический износ гарантируют высочайшее качество продукции. Глазури, в том числе те, которые используются для декорирования посуды, проходят проверку в «Управлении Еды и Лекарств» США и соответствуют строгим требованиям «Положения 65» о наличии тяжелых металлов.
         </p>
 
-        <div class="xl:w-1/3 mt-3 md:mt-10 border-t-2 border-b-2 border-gray-950 p-1">
+        <div class="xl:w-2/3 mt-3 md:mt-10 border-t-2 border-b-2 border-gray-950 p-1">
           Доставка
         </div>
       </div>

@@ -20,7 +20,9 @@
         </div>
         <div class="w-full flex justify-end mt-5">
           <MapPinIcon class="h-6"/>
-          <ShoppingBagIcon class="ml-2 h-6"/>
+          <FwbA href="/cart" class="mb-2">
+            <ShoppingBagIcon class="ml-2 h-6"/>
+          </FwbA>
         </div>
       </div>
 
@@ -60,7 +62,9 @@
         <div class="flex justify-end mt-5 gap-6 mr-10 mb-2">
           <LanguageSelector/>
           <MapPinIcon class="h-7"/>
-          <ShoppingBagIcon class="h-7"/>
+          <FwbA href="/cart" class="mb-2">
+            <ShoppingBagIcon class="h-7"/>
+          </FwbA>
         </div>
       </div>
 
