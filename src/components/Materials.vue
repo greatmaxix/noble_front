@@ -20,7 +20,7 @@
               <p class="font-bold text-xs">
                 {{item.name}}
               </p>
-              <PrimaryBtn class="p-4 align-bottom	font-semibold mt-3" :title="$t('more_info')" @click="handleMoreInfoClick(item)"/>
+              <PrimaryBtn class="p-4 align-bottom	font-semibold mt-3" @click="handleMoreInfoClick(item)">{{$t('more_info')}}</PrimaryBtn>
             </div>
           </div>
         </template>

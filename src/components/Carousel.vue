@@ -7,9 +7,10 @@
           <div class="ml-10 mb-10 flex justify-between">
             <PrimaryBtn
               class="self-end p-5 capitalize text-2xl"
-              :title="$t('more_info')"
               @click="handleMoreInfoClick(currentPic)"
-            />
+            >
+              {{$t('more_info')}}
+            </PrimaryBtn>
             <FwbImg class="hidden md:block self-end max-w-[35rem] max-h-[20rem]" :alt="currentPic.alt" :src="currentPic.brand_src"/>
           </div>
         </div>

@@ -22,7 +22,7 @@
               <span class="line-through">{{currencyFormatter().format(item.oldPrice)}}тг</span>|{{currencyFormatter().format(item.price)}}тг
             </span>
           </p>
-          <PrimaryBtn class="p-4 align-bottom	 uppercase font-semibold mt-3" :title="$t('add_to_cart')"/>
+          <PrimaryBtn class="p-4 align-bottom	 uppercase font-semibold mt-3">{{$t('add_to_cart')}}</PrimaryBtn>
         </div>
       </div>
     </div>

@@ -36,7 +36,9 @@
               <span class="line-through">{{currencyFormatter().format(item.oldPrice)}}тг</span> | {{currencyFormatter().format(item.price)}}тг
             </span>
         </p>
-        <PrimaryBtn class="p-4 align-bottom	uppercase font-semibold mt-3 xl:w-2/3" :title="$t('add_to_cart')"/>
+        <PrimaryBtn class="p-4 align-bottom	uppercase font-semibold mt-3 xl:w-2/3">
+          {{$t('add_to_cart')}}
+        </PrimaryBtn>
 
         <div class="xl:w-2/3 mt-10 border-t-2 border-b-2 border-gray-950 p-1">
           Описание
@@ -73,6 +75,7 @@ import serviz4 from "@/assets/serviz4.jpeg";
 import {currencyFormatter} from "@/utils.js";
 import PrimaryBtn from "@/components/PrimaryBtn.vue";
 import Collections from "@/components/Collections.vue";
+import arrowRight from "@/assets/icons/arrowRight.vue"
 
 export default defineComponent({
   components: {Collections, PrimaryBtn, Breadcrumbs,ChevronDoubleRightIcon,ChevronDoubleLeftIcon},
@@ -88,7 +91,8 @@ export default defineComponent({
         imgSrc: serviz4,
         otherPictures: [
             serviz1, serviz2, serviz3,serviz1, serviz2, serviz3, serviz1, serviz2, serviz3,serviz1, serviz2, serviz3
-        ]
+        ],
+        arrowRight: arrowRight,
       },
       mainImage: null,
       collectionItems: [

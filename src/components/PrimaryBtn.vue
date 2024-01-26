@@ -1,7 +1,7 @@
 <template>
   <button :type="type"
           class="bg-gray-950 opacity-80 font-bolder text-white">
-    {{title}}
+    <slot/>
   </button>
 </template>
 
@@ -12,7 +12,7 @@ import {defineComponent} from "vue";
 export default defineComponent({
   props: {
     title: {
-      required: true,
+      required: false,
       type: String,
     },
     type: {
