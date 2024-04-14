@@ -62,7 +62,6 @@ onUnmounted(() => {
 })
 
 function handleMoreInfoClick(picObj) {
-  console.log('handle more info clicked')
   router.push({name: 'product', params: {id: 123}})
 }
 </script>
