@@ -30,10 +30,10 @@
              class="transition-opacity duration-300 ease-in-out bg-gray-200 my-3">
           <div class="flex flex-col text-center">
             <FwbA
-                v-for="route in routes" :key="route"
+                v-for="route in routes" :key="route.name"
                 class="rounded-xl p-1 m-1 w-full"
-                :href="`/${route}`">
-              {{$t(route)}}
+                :href="`${route.route}`">
+              {{$t(route.name)}}
             </FwbA>
           </div>
         </div>
@@ -66,10 +66,10 @@
 
       <div class="w-full flex font-bold justify-around uppercase mt-2">
         <FwbA
-            v-for="route in routes" :key="route"
+            v-for="route in routes" :key="route.name"
             class="rounded-xl p-1 m-1"
-            :href="`/${route}`">
-          {{$t(route)}}
+            :href="`${route.route}`">
+          {{$t(route.name)}}
         </FwbA>
       </div>
     </div>
@@ -84,6 +84,15 @@ import { ref } from 'vue'
 import SearchButton from "@/components/SearchButton.vue";
 import LanguageSelector from "@/components/LanguageSelector.vue";
 let showLinks = ref(false)
-const routes = ['brands', 'new_year', 'sets', 'table_serve', 'glass_and_bar', 'cutlery', 'decor_and_interior', 'kitchenware']
+const routes = [
+    { route: '/catalogue/brands', name: 'brands' },
+    { route: '/catalogue/new_year', name: 'new_year' },
+    { route: '/catalogue/sets', name: 'sets' },
+    { route: '/catalogue/table_serve', name: 'table_serve' },
+    { route: '/catalogue/glass_and_bar', name: 'glass_and_bar' },
+    { route: '/catalogue/cutlery', name: 'cutlery' },
+    { route: '/catalogue/decor_and_interior', name: 'decor_and_interior' },
+    { route: '/catalogue/kitchenware', name: 'kitchenware' }
+];
 
 </script>
