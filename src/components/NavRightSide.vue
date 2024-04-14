@@ -20,7 +20,9 @@
         </div>
         <div class="w-full flex justify-end mt-5">
           <MapPinIcon class="h-6"/>
-          <ShoppingBagIcon class="ml-2 h-6"/>
+          <FwbA href="/cart" class="mb-2">
+            <ShoppingBagIcon class="ml-2 h-6"/>
+          </FwbA>
         </div>
       </div>
 
@@ -57,14 +59,18 @@
 
         <SearchButton/>
 
-        <div class="flex justify-end mt-5 gap-6 mr-10">
+        <div class="flex justify-end mt-5 gap-6 mr-10 mb-2">
           <LanguageSelector/>
           <MapPinIcon class="h-7"/>
-          <ShoppingBagIcon class="h-7"/>
+          <FwbA href="/cart" class="mb-2">
+            <ShoppingBagIcon class="h-7"/>
+          </FwbA>
         </div>
       </div>
 
-      <div class="w-full flex font-bold justify-around uppercase mt-2">
+      <div class="w-full flex font-bold justify-around uppercase z-10"
+           :class="{'fixed bg-white top-0': isSticky}"
+      >
         <FwbA
             v-for="route in routes" :key="route.name"
             class="rounded-xl p-1 m-1"
@@ -80,7 +86,7 @@ import {FwbA, FwbImg} from "flowbite-vue";
 import { MapPinIcon, ShoppingBagIcon, Bars3Icon } from "@heroicons/vue/24/solid";
 import noble_logo from '@/assets/noble.png'
 
-import { ref } from 'vue'
+import {onMounted, onUnmounted, ref} from 'vue'
 import SearchButton from "@/components/SearchButton.vue";
 import LanguageSelector from "@/components/LanguageSelector.vue";
 let showLinks = ref(false)
@@ -94,5 +100,18 @@ const routes = [
     { route: '/catalogue/decor_and_interior', name: 'decor_and_interior' },
     { route: '/catalogue/kitchenware', name: 'kitchenware' }
 ];
+
+let isSticky = ref(false)
+const scrollHandler = () => {
+  isSticky.value = window.scrollY > 100;
+}
+
+onMounted(() => {
+  window.addEventListener("scroll", scrollHandler);
+})
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", scrollHandler);
+})
 
 </script>

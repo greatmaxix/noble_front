@@ -7,9 +7,10 @@
           <div class="ml-10 mb-10 flex justify-between">
             <PrimaryBtn
               class="self-end p-5 capitalize text-2xl"
-              :title="$t('more_info')"
               @click="handleMoreInfoClick(currentPic)"
-            />
+            >
+              {{$t('more_info')}}
+            </PrimaryBtn>
             <FwbImg class="hidden md:block self-end max-w-[35rem] max-h-[20rem]" :alt="currentPic.alt" :src="currentPic.brand_src"/>
           </div>
         </div>
@@ -18,12 +19,14 @@
   </div>
 </template>
 <script setup>
-import noble_logo from '@/assets/noble.png'
 import main from '@/assets/main.jpeg'
 import wedgwood from '@/assets/wedgwood.png'
 import {ref, onMounted, onUnmounted} from "vue";
 import PrimaryBtn from "@/components/PrimaryBtn.vue";
 import {FwbImg} from "flowbite-vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const pictures = [
   {
@@ -31,12 +34,6 @@ const pictures = [
     brand_src: wedgwood,
     alt: 'Some dish alt again'
   },
-  {
-    src: noble_logo,
-    brand_src: wedgwood,
-    alt: 'Some dish alt'
-  },
-
 ]
 
 let carouselIndex = 0
@@ -66,5 +63,6 @@ onUnmounted(() => {
 
 function handleMoreInfoClick(picObj) {
   console.log('handle more info clicked')
+  router.push({name: 'product', params: {id: 123}})
 }
 </script>
