@@ -1,24 +1,8 @@
 <template>
   <div class="flex flex-col m-3 xl:m-5 text-lg">
-    <FwbBreadcrumb>
-      <FwbBreadcrumbItem home href="/">
-        <h2 class="uppercase font-normal py-2">
-          {{ $t('home') }}
-        </h2>
-      </FwbBreadcrumbItem>
-      <FwbBreadcrumbItem href="/catalogue">
-        <h2 class="uppercase font-normal py-2">
-          {{ $t('catalogue') }}
-        </h2>
-      </FwbBreadcrumbItem>
-      <FwbBreadcrumbItem>
-        <h2 class="uppercase font-normal py-2">
-        {{ $t($route.params.name) }}
-        </h2>
-      </FwbBreadcrumbItem>
-    </FwbBreadcrumb>
+    <breadcrumbs :items="breadcrumbItems"/>
     <div class="text-3xl mt-2">
-      <h1 class="uppercase font-semibold py-2">
+      <h1 class="uppercase font-semibold py-2 hidden">
         {{ $t($route.params.name) }}
       </h1>
     </div>
@@ -58,15 +42,19 @@
 
 <script setup>
 import { FwbBreadcrumb, FwbBreadcrumbItem } from 'flowbite-vue';
+import {useRoute} from "vue-router";
 import {useI18n} from "vue-i18n";
 import {AdjustmentsHorizontalIcon, Bars3BottomRightIcon} from "@heroicons/vue/24/solid/index.js";
 import meringa from '@/assets/meringa.jpg'
 import meringa2 from '@/assets/meringa2.png'
 import CatalogueItem from '@/components/CatalogueItem.vue';
 import CatalogueFilter from '@/components/CatalogueFilter.vue';
-import { ref } from 'vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import { ref, computed } from 'vue';
 
 const openFilters = ref(false);
+const { t } = useI18n();
+const route = useRoute()
 
 const collectionItems = [
       {
@@ -96,6 +84,17 @@ const collectionItems = [
         oldPrice: 244000,
         imgSrc: meringa2
       },
+]
+
+const breadcrumbItems = [
+  {
+    label: t('catalogue'),
+    link: '/catalogue'
+  },
+  {
+    label: t(route.params.name),
+    link: null
+  },
 ]
 
 const brands = [

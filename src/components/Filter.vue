@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-4 rounded-md shadow-md w-full h-full">
+  <div class="bg-white p-4 rounded-md shadow-2xl w-full h-full">
     <button type="button" dir="rtl" class="absolute top-0 start-0" v-on:click="$emit('closeModal')">
       <XMarkIcon class="h-7 mt-1.5 mr-1" />
     </button>

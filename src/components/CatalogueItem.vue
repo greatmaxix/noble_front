@@ -1,5 +1,5 @@
 <template>
-  <fwb-card class="m-1 xl:m-3 fwb-card" :img-alt="title" :img-src="imageUrl" variant="image">
+  <fwb-card class="m-1 xl:m-3 fwb-card shadow-2xl" :img-alt="title" :img-src="imageUrl" variant="image">
     <div class="p-2 lg:p-5">
       <h5
         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 min-h-24 max-h-24 overflow-hidden dark:text-white"

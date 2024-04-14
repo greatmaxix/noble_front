@@ -1,12 +1,15 @@
 <template>
-  <fwb-breadcrumb class="font-thin mx-5 text-xs md:text-xl">
+  <fwb-breadcrumb class="font-thin md:mx-5 md:text-3xl">
     <FwbA href="/">
       {{$t('main_page')}}
     </FwbA>
-    <span class="flex ml-0" v-for="item in items" :key="item.link">
-      <FwbA :href="item.link">
+    <span class="flex ml-0" v-for="item in items" :key="item.label">
+      <FwbA v-if="item.link" :href="item.link">
         / {{item.label}}
       </FwbA>
+      <p v-else>
+        / <span class="font-normal">{{item.label}}</span>
+      </p>
     </span>
   </fwb-breadcrumb>
 </template>
