@@ -10,7 +10,7 @@
           }"
         >
           <Transition name="link-transition" mode="out-in">
-            <router-link :to="`/product/${item.id}`">
+            <router-link :to="`/product/${item.id}/${item.type}`">
               <div class="relative">
                 <div class="absolute bottom-0 backdrop-blur-xl bg-white/50 h-[100px] w-full"></div>
                 <img

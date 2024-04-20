@@ -4,7 +4,7 @@
       <router-link
         v-if="currentProduct"
         class="relative image-container cursor-pointer"
-        :to="`/product/${currentProduct.id}`"
+        :to="`/product/${currentProduct.id}/${currentProduct.type}`"
       >
         <img
           class="fit-image"

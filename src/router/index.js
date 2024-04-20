@@ -19,7 +19,7 @@ const router = createRouter({
       component: CatalogueView
     },
     {
-      path: '/product/:id',
+      path: '/product/:id/:type',
       name: 'product',
       component: ProductView
     },

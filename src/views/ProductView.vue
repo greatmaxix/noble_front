@@ -1,179 +1,167 @@
 <template>
-  <div class="md:px-10 my-5">
-    <breadcrumbs :items="breadcrumbItems"/>
-    <div class="grid grid-cols-1 md:grid-cols-3">
-      <div id="images-container" class="flex flex-col md:col-span-2">
-        <div class="w-100 md:w-[300px] 2xl:w-[700px] h-[500px] m-5">
-          <div class="relative image-container" :style="{ backgroundImage: `url(${mainImage})` }">
+  <Transition name="link-transition" mode="out-in" v-if="item">
+    <div class="md:px-10 my-5 mx-1">
+      <breadcrumbs :items="breadcrumbItems" />
+      <div class="grid grid-cols-1 md:grid-cols-3">
+        <div id="images-container" class="flex flex-col md:col-span-2 drop-shadow-lg">
+          <div class="w-100 lg:m-5">
+            <img class="card-image h-[500px]"
+              :src="getImgUrl(getImageByIndex(imageIndex))"
+              :alt="item.name"
+            />
           </div>
-        </div>
-        <div id="image-carousel" class="relative md:w-[300px] 2xl:w-[700px] mx-5">
-          <div class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 rounded">
-            <ChevronDoubleLeftIcon class="h-7 cursor-pointer" @click="handleMoveLeft()"/>
-          </div>
-          <div ref="imageContainer" class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar">
-            <div v-for="pic in item.otherPictures" :key="pic" class="w-[180px] h-[150px] flex-none py-4 px-4 md:px-10">
-              <div class="image-container cursor-pointer" :style="{ backgroundImage: `url(${pic})` }" @click="changeMainImage(pic)"/>
+          <div id="image-carousel" class="relative md:mx-5">
+            <div
+              class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 rounded"
+            >
+              <ChevronDoubleLeftIcon class="h-7 cursor-pointer" @click="handleMoveLeft()" />
+            </div>
+            <div
+              ref="imageContainer"
+              class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar"
+            >
+              <div
+                v-for="pic, index in item.images"
+                :key="pic"
+                class="flex-none"
+              >
+                <img class="card-image cursor-pointer w-[100px] h-[100px] p-1"
+                  :src="getImgUrl(pic.image)"
+                  :alt="item.name"
+                  @click="imageIndex = index"
+                />
+              </div>
+            </div>
+            <div
+              class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 right-0 rounded"
+            >
+              <ChevronDoubleRightIcon class="h-7 cursor-pointer" @click="handleMoveRight()" />
             </div>
           </div>
-          <div class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 right-0 rounded">
-            <ChevronDoubleRightIcon class="h-7 cursor-pointer" @click="handleMoveRight()"/>
+        </div>
+        <div id="info-container" class="flex flex-col md:mx-5 text-center md:text-start text-lg">
+          <h1 class="font-thin text-2xl md:text-3xl">
+            {{ item.name }}
+          </h1>
+          <p class="font-thin">
+            {{ item.brand }}
+          </p>
+          <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
+            {{ $t('description') }}
           </div>
+          <h2>
+            {{ item.description }}
+          </h2>
+          <p class="my-4 self-center text-4xl">
+            <template v-if="item.newPice">
+              <span>
+                <span class="line-through">{{ currencyFormatter().format(item.oldPrice) }}тг</span> |
+                {{ currencyFormatter().format(item.price) }}тг
+              </span>
+            </template>
+            <template v-else>
+              <span>
+                {{ currencyFormatter().format(item.oldPrice) }}тг
+              </span>
+            </template>
+          </p>
+          <PrimaryBtn class="p-4 align-bottom uppercase self-center font-semibold mt-3 xl:w-2/3">
+            {{ $t('add_to_cart') }}
+          </PrimaryBtn>
+
+          <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
+            {{ $t('history') }}
+          </div>
+          <p class="p-1">
+            {{ item.history }}
+          </p>
         </div>
       </div>
-      <div id="info-container" class="flex flex-col mx-5">
-        <p class="brand-font font-bold">
-          {{item.brand}}
-        </p>
-        <p class="product-name-font font-bold md:text-2xl">
-          {{item.description}}
-        </p>
-        <p class="product-name-font md:text-2xl">
-          {{item.name}}
-        </p>
-        <p class="md:text-xl my-4">
-            <span>
-              <span class="line-through">{{currencyFormatter().format(item.oldPrice)}}тг</span> | {{currencyFormatter().format(item.price)}}тг
-            </span>
-        </p>
-        <PrimaryBtn class="p-4 align-bottom	uppercase font-semibold mt-3 xl:w-2/3">
-          {{$t('add_to_cart')}}
-        </PrimaryBtn>
-
-        <div class="xl:w-2/3 mt-10 border-t-2 border-b-2 border-gray-950 p-1">
-          Описание
-        </div>
-        <h2 class="p-1 font-semibold">
-          История
-        </h2>
-        <p class="p-1 xl:w-2/3">
-          Фарфор, выпускаемый фабрикой Tognana, подвергается тщательному лабораторному контролю, в сотрудничестве с Центром Керамики в Болонье и Экспериментальной Базой Стекла в Венеции. Отличные результаты тестов в индустриальных посудомоечных машинах, тестов на амбразивный и механический износ гарантируют высочайшее качество продукции. Глазури, в том числе те, которые используются для декорирования посуды, проходят проверку в «Управлении Еды и Лекарств» США и соответствуют строгим требованиям «Положения 65» о наличии тяжелых металлов.
-        </p>
-
-        <div class="xl:w-2/3 mt-3 md:mt-10 border-t-2 border-b-2 border-gray-950 p-1">
-          Доставка
-        </div>
-      </div>
-    </div>
-    <Collections
+      <Collections
+        v-if="item.productions"
         class="my-10"
         :title="collectionItems[0].title"
         :items="collectionItems[0].items"
-    />
-  </div>
+      />
+    </div>
+  </Transition>
 </template>
 
 <script>
+import { defineComponent } from 'vue'
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
+import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from '@heroicons/vue/24/solid/index.js'
+import { currencyFormatter, getImgUrl } from '@/utils.js'
+import PrimaryBtn from '@/components/PrimaryBtn.vue'
+import Collections from '@/components/Collections.vue'
+import api from '@/api'
 
-import {defineComponent} from "vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from "@heroicons/vue/24/solid/index.js";
-import serviz1 from "@/assets/serviz1.jpeg";
-import serviz2 from "@/assets/serviz2.jpeg";
-import serviz3 from "@/assets/serviz3.jpeg";
-import serviz4 from "@/assets/serviz4.jpeg";
-import {currencyFormatter} from "@/utils.js";
-import PrimaryBtn from "@/components/PrimaryBtn.vue";
-import Collections from "@/components/Collections.vue";
-import arrowRight from "@/assets/icons/arrowRight.vue"
+const GET_ONE_URL = '/ww/getProductionById/'
 
 export default defineComponent({
-  components: {Collections, PrimaryBtn, Breadcrumbs,ChevronDoubleRightIcon,ChevronDoubleLeftIcon},
+  components: {
+    Collections,
+    PrimaryBtn,
+    Breadcrumbs,
+    ChevronDoubleRightIcon,
+    ChevronDoubleLeftIcon
+  },
   data() {
     return {
-      item: {
-        id: 4,
-        brand: 'Tognana',
-        description: 'Cтоловый сервиз на 6 персон',
-        name: '«Citrus»',
-        price: 90000,
-        oldPrice: 81000,
-        imgSrc: serviz4,
-        otherPictures: [
-            serviz1, serviz2, serviz3,serviz1, serviz2, serviz3, serviz1, serviz2, serviz3,serviz1, serviz2, serviz3
-        ],
-        arrowRight: arrowRight,
-      },
+      item: null,
       mainImage: null,
-      collectionItems: [
-        {
-          title: this.$t('sets'),
-          items: [
-            {
-              id: 1,
-              brand: 'Brandani',
-              description: 'Столовый сервиз на 12 персон',
-              name: 'Meringa',
-              price: 195200,
-              oldPrice: 244000,
-              imgSrc: serviz1
-            },
-            {
-              id: 2,
-              brand: 'Brandani',
-              description: 'Столовый сервиз на 12 персон',
-              name: 'Meringa',
-              price: 195200,
-              oldPrice: 244000,
-              imgSrc: serviz2
-            },
-            {
-              id: 3,
-              brand: 'Tognana',
-              description: 'Cтоловый сервиз на 6 персон',
-              name: '«Albatross»',
-              price: 90000,
-              oldPrice: 81000,
-              imgSrc: serviz3
-            },
-            {
-              id: 4,
-              brand: 'Tognana',
-              description: 'Cтоловый сервиз на 6 персон',
-              name: '«Citrus»',
-              price: 90000,
-              oldPrice: 81000,
-              imgSrc: serviz4
-            },
-          ]
-        }
-      ]
+      imageIndex: 0
     }
   },
   computed: {
     breadcrumbItems() {
       return [
         {
-          label: this.item.description,
+          label: this.item.name,
           link: this.$route
         }
       ]
     }
   },
   mounted() {
-    console.log(this.$route.params.id)
-    this.mainImage = this.item.imgSrc
+    try {
+      const searchParams = new URLSearchParams()
+      searchParams.append('type', this.$route.params.type)
+      searchParams.append('productionId', this.$route.params.id)
+
+      api.get(`${GET_ONE_URL}?${searchParams.toString()}`).then((response) => {
+        this.item = response.data
+      })
+    } catch (error) {
+      console.error('Error fetching item:', error)
+    }
   },
   methods: {
     currencyFormatter,
+    getImgUrl,
     handleMoveLeft() {
-      const container = this.$refs.imageContainer;
+      const container = this.$refs.imageContainer
       container.scrollTo({
         left: container.scrollLeft - container.clientWidth / 3,
-        behavior: 'smooth',
-      });
+        behavior: 'smooth'
+      })
     },
     handleMoveRight() {
-      const container = this.$refs.imageContainer;
+      const container = this.$refs.imageContainer
       container.scrollTo({
         left: container.scrollLeft + container.clientWidth / 3,
-        behavior: 'smooth',
-      });
+        behavior: 'smooth'
+      })
     },
     changeMainImage(url) {
       this.mainImage = url
+    },
+    getImageByIndex(index) {
+      if (!this.item.images) return null
+
+      const sorted = this.item.images.sort((a, b) => a.order - b.order)
+      return sorted[index].image
     }
   },
 })
-
 </script>

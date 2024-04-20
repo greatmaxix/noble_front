@@ -5,7 +5,7 @@
     </h2>
     <div class="overflow-x-auto flex flex-nowrap items-start lg:justify-center w-full no-scrollbar">
       <div v-for="item in items" :key="item.id" class="w-[300px] lg:w-[500px] h-full flex-none py-4 px-4 md:px-10">
-        <router-link :to="`/product/${item.id}`">
+        <router-link :to="`/product/${item.id}/${item.type}`">
           <img
             class="h-[300px] lg:h-[500px] card-image"
             :src="getImgUrl(item.image)"

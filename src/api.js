@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = 'https://195.49.210.129'; 
+export const BASE_URL = 'https://195.49.210.129';
 
 let config = {
     baseURL: `${BASE_URL}/api/rest/productionService/`,
@@ -16,7 +16,10 @@ instance.interceptors.request.use(function (config) {
         locale = 'ru'
     }
 
-    config.url = config.url + `${locale}`
+    const fullUrl = new URL(BASE_URL + config.url)
+    fullUrl.searchParams.append('locale', locale)
+
+    config.url = fullUrl.pathname + fullUrl.search
 
     return config
 })
