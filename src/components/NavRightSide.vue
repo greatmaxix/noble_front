@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <div class="w-full flex font-bold justify-around uppercase z-10"
+      <div class="w-full flex font-bold justify-around uppercase z-40"
            :class="{'fixed bg-white top-0': isSticky}"
       >
         <FwbA

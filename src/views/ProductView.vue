@@ -2,44 +2,33 @@
   <Transition name="link-transition" mode="out-in" v-if="item">
     <div class="md:px-10 my-5 mx-1">
       <breadcrumbs :items="breadcrumbItems" />
-      <div class="grid grid-cols-1 md:grid-cols-3">
-        <div id="images-container" class="flex flex-col md:col-span-2 drop-shadow-lg">
-          <div class="w-100 lg:m-5">
-            <img class="card-image h-[500px]"
-              :src="getImgUrl(getImageByIndex(imageIndex))"
-              :alt="item.name"
-            />
-          </div>
-          <div id="image-carousel" class="relative md:mx-5">
-            <div
-              class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 rounded"
-            >
-              <ChevronDoubleLeftIcon class="h-7 cursor-pointer" @click="handleMoveLeft()" />
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div>
+          <FwbCarousel
+            class="carousel w-100 my-3"
+            :pictures="carouselImages"
+            :slide="false"
+            :slide-interval="15000"
+            animation
+          >
+          </FwbCarousel>
+          <div class="hidden md:block mt-3">
             <div
               ref="imageContainer"
               class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar"
             >
-              <div
-                v-for="pic, index in item.images"
-                :key="pic"
-                class="flex-none"
-              >
-                <img class="card-image cursor-pointer w-[100px] h-[100px] p-1"
+              <div v-for="(pic, index) in item.images" :key="pic" class="flex-none">
+                <img
+                  class="card-image cursor-pointer w-[200px] h-[100px] p-1"
                   :src="getImgUrl(pic.image)"
                   :alt="item.name"
                   @click="imageIndex = index"
                 />
               </div>
             </div>
-            <div
-              class="bg-gray-950 opacity-50 text-white absolute top-1/2 transform -translate-y-1/2 right-0 rounded"
-            >
-              <ChevronDoubleRightIcon class="h-7 cursor-pointer" @click="handleMoveRight()" />
-            </div>
           </div>
         </div>
-        <div id="info-container" class="flex flex-col md:mx-5 text-center md:text-start text-lg">
+        <div id="info-container" class="flex flex-col md:mx-5 text-center md:text-start text-lg md:w-3/4 md:ml-auto">
           <h1 class="font-thin text-2xl md:text-3xl">
             {{ item.name }}
           </h1>
@@ -55,14 +44,12 @@
           <p class="my-4 self-center text-4xl">
             <template v-if="item.newPice">
               <span>
-                <span class="line-through">{{ currencyFormatter().format(item.oldPrice) }}тг</span> |
-                {{ currencyFormatter().format(item.price) }}тг
+                <span class="line-through">{{ currencyFormatter().format(item.oldPrice) }}тг</span>
+                | {{ currencyFormatter().format(item.price) }}тг
               </span>
             </template>
             <template v-else>
-              <span>
-                {{ currencyFormatter().format(item.oldPrice) }}тг
-              </span>
+              <span> {{ currencyFormatter().format(item.oldPrice) }}тг </span>
             </template>
           </p>
           <PrimaryBtn class="p-4 align-bottom uppercase self-center font-semibold mt-3 xl:w-2/3">
@@ -95,6 +82,7 @@ import { currencyFormatter, getImgUrl } from '@/utils.js'
 import PrimaryBtn from '@/components/PrimaryBtn.vue'
 import Collections from '@/components/Collections.vue'
 import api from '@/api'
+import { FwbCarousel } from 'flowbite-vue'
 
 const GET_ONE_URL = '/ww/getProductionById/'
 
@@ -104,7 +92,8 @@ export default defineComponent({
     PrimaryBtn,
     Breadcrumbs,
     ChevronDoubleRightIcon,
-    ChevronDoubleLeftIcon
+    ChevronDoubleLeftIcon,
+    FwbCarousel
   },
   data() {
     return {
@@ -115,12 +104,24 @@ export default defineComponent({
   },
   computed: {
     breadcrumbItems() {
+      console.log(this.$route)
       return [
         {
           label: this.item.name,
-          link: this.$route
+          link: this.$route.href
         }
       ]
+    },
+    sortedImages() {
+      return this.item.images.sort((a, b) => a.order - b.order)
+    },
+    carouselImages() {
+      return this.sortedImages.map((el) => {
+        return {
+          src: this.getImgUrl(el.image),
+          alt: this.item.name + el.order
+        }
+      })
     }
   },
   mounted() {
@@ -165,3 +166,10 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+.carousel img {
+  object-fit: cover;
+  height: 500px;
+}
+</style>
