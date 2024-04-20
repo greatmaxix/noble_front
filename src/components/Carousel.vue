@@ -1,67 +1,60 @@
 <template>
-  <div class="h-[520px]">
-    <Transition name="link-transition"  mode="out-in">
-      <div class="relative image-container" :style="{ backgroundImage: `url(${currentPic.src})` }">
+  <div class="h-screen">
+    <Transition name="link-transition" mode="out-in">
+      <router-link
+        v-if="currentProduct"
+        class="relative image-container cursor-pointer"
+        :to="`/product/${currentProduct.id}`"
+      >
+        <img
+          class="fit-image"
+          :src="getImgUrl(currentProduct.image)"
+          :alt="currentProduct.name"
+        />
         <div class="absolute bottom-0 w-full">
-          <!-- Your content goes here -->
-          <div class="ml-10 mb-10 flex justify-between">
-            <PrimaryBtn
-              class="self-end p-5 capitalize text-2xl"
-              @click="handleMoreInfoClick(currentPic)"
+          <div class="mb-10 flex justify-between">
+            <h2
+              class="self-end p-5 capitalize text-3xl w-full bg-gray-950 opacity-80 font-thin text-white text-center text-2xl lg:text-4xl"
             >
-              {{$t('more_info')}}
-            </PrimaryBtn>
-            <FwbImg class="hidden md:block self-end max-w-[35rem] max-h-[20rem]" :alt="currentPic.alt" :src="currentPic.brand_src"/>
+              {{ currentProduct.name }}
+            </h2>
           </div>
         </div>
-      </div>
+      </router-link>
     </Transition>
   </div>
 </template>
 <script setup>
-import main from '@/assets/main.jpeg'
-import wedgwood from '@/assets/wedgwood.png'
-import {ref, onMounted, onUnmounted} from "vue";
-import PrimaryBtn from "@/components/PrimaryBtn.vue";
-import {FwbImg} from "flowbite-vue";
-import {useRouter} from "vue-router";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { defineProps } from 'vue'
+import { getImgUrl } from '@/utils'
 
-const router = useRouter()
-
-const pictures = [
-  {
-    src: main,
-    brand_src: wedgwood,
-    alt: 'Some dish alt again'
-  },
-]
+const props = defineProps({
+  productions: Array
+})
 
 let carouselIndex = 0
 let interval = null
 
-
-let currentPic = ref(pictures[carouselIndex])
+let currentProduct = ref({})
 
 function createCarouselInterval() {
   interval = setInterval(() => {
-    if (carouselIndex < pictures.length - 1) {
+    if (carouselIndex < props.productions.length - 1) {
       carouselIndex += 1
     } else {
       carouselIndex = 0
     }
-    currentPic.value = pictures[carouselIndex];
+    currentProduct.value = props.productions[carouselIndex]
   }, 5000)
 }
 
 onMounted(() => {
+  currentProduct.value = props.productions[carouselIndex]
   createCarouselInterval()
 })
 
 onUnmounted(() => {
   clearInterval(interval)
 })
-
-function handleMoreInfoClick(picObj) {
-  router.push({name: 'product', params: {id: 123}})
-}
 </script>

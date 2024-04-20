@@ -33,7 +33,10 @@ const router = createRouter({
       name: 'order',
       component: OrderView
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { top: 0 }
+  }
 })
 
 export default router
