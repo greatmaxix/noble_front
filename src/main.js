@@ -7,6 +7,7 @@ import router from '@/router'
 import { createI18n } from 'vue-i18n';
 import ru from '@/locales/ru.json';
 import en from '@/locales/en.json';
+import store from '@/store'
 
 const localeFromLocalStorage = localStorage.getItem('locale');
 
@@ -22,6 +23,6 @@ const i18n = createI18n({
 const app = createApp(App)
 
 app.use(router)
-
+app.use(store)
 app.use(i18n);
 app.mount('#app')

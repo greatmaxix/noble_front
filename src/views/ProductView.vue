@@ -1,77 +1,87 @@
 <template>
-  <Transition name="link-transition" mode="out-in" v-if="item">
-    <div class="md:px-10 my-5 mx-1">
-      <breadcrumbs :items="breadcrumbItems" />
-      <div class="grid grid-cols-1 md:grid-cols-2">
-        <div>
-          <FwbCarousel
-            class="carousel w-100 my-3"
-            :pictures="carouselImages"
-            :slide="false"
-            :slide-interval="15000"
-            animation
-          >
-          </FwbCarousel>
-          <div class="hidden md:block mt-3">
-            <div
-              ref="imageContainer"
-              class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar"
+  <div>
+    <Transition name="link-transition" mode="out-in" v-if="item">
+      <div class="md:px-10 my-5 mx-1">
+        <breadcrumbs :items="breadcrumbItems" />
+        <div class="grid grid-cols-1 md:grid-cols-2">
+          <div>
+            <FwbCarousel
+              class="carousel w-100 my-3"
+              :pictures="carouselImages"
+              :slide="false"
+              :slide-interval="15000"
+              animation
             >
-              <div v-for="(pic, index) in item.images" :key="pic" class="flex-none">
-                <img
-                  class="card-image cursor-pointer w-[200px] h-[100px] p-1"
-                  :src="getImgUrl(pic.image)"
-                  :alt="item.name"
-                  @click="imageIndex = index"
-                />
+            </FwbCarousel>
+            <div class="hidden md:block mt-3">
+              <div
+                ref="imageContainer"
+                class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar"
+              >
+                <div v-for="(pic, index) in item.images" :key="pic" class="flex-none">
+                  <img
+                    class="card-image cursor-pointer w-[200px] h-[100px] p-1"
+                    :src="getImgUrl(pic.image)"
+                    :alt="item.name"
+                    @click="imageIndex = index"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div id="info-container" class="flex flex-col md:mx-5 text-center md:text-start text-lg md:w-3/4 md:ml-auto">
-          <h1 class="font-thin text-2xl md:text-3xl">
-            {{ item.name }}
-          </h1>
-          <p class="font-thin">
-            {{ item.brand }}
-          </p>
-          <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
-            {{ $t('description') }}
-          </div>
-          <h2>
-            {{ item.description }}
-          </h2>
-          <p class="my-4 self-center text-4xl">
-            <template v-if="item.newPice">
-              <span>
-                <span class="line-through">{{ currencyFormatter().format(item.oldPrice) }}тг</span>
-                | {{ currencyFormatter().format(item.price) }}тг
-              </span>
-            </template>
-            <template v-else>
-              <span> {{ currencyFormatter().format(item.oldPrice) }}тг </span>
-            </template>
-          </p>
-          <PrimaryBtn class="p-4 align-bottom uppercase self-center font-semibold mt-3 xl:w-2/3">
-            {{ $t('add_to_cart') }}
-          </PrimaryBtn>
+          <div
+            id="info-container"
+            class="flex flex-col md:mx-5 text-center md:text-start text-lg md:w-3/4 md:ml-auto"
+          >
+            <h1 class="font-thin text-2xl md:text-3xl">
+              {{ item.name }}
+            </h1>
+            <p class="font-thin">
+              {{ item.brand }}
+            </p>
+            <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
+              {{ $t('description') }}
+            </div>
+            <h2>
+              {{ item.description }}
+            </h2>
+            <p class="my-4 self-center text-4xl">
+              <template v-if="item.newPice">
+                <span>
+                  <span class="line-through"
+                    >{{ currencyFormatter().format(item.oldPrice) }}тг</span
+                  >
+                  | {{ currencyFormatter().format(item.price) }}тг
+                </span>
+              </template>
+              <template v-else>
+                <span> {{ currencyFormatter().format(item.oldPrice) }}тг </span>
+              </template>
+            </p>
+            <PrimaryBtn class="p-4 align-bottom uppercase self-center font-semibold mt-3 xl:w-2/3">
+              {{ $t('add_to_cart') }}
+            </PrimaryBtn>
 
-          <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
-            {{ $t('history') }}
+            <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
+              {{ $t('history') }}
+            </div>
+            <p class="p-1">
+              {{ item.history }}
+            </p>
           </div>
-          <p class="p-1">
-            {{ item.history }}
-          </p>
         </div>
+        <Collections
+          v-if="item.productions"
+          class="my-10"
+          :title="collectionItems[0].title"
+          :items="collectionItems[0].items"
+        />
       </div>
-      <Collections
-        v-if="item.productions"
-        class="my-10"
-        :title="collectionItems[0].title"
-        :items="collectionItems[0].items"
-      />
-    </div>
-  </Transition>
+    </Transition>
+    <div v-else class="flex items-center justify-center p-10 h-screen">
+    <fwb-spinner size="12" color="gray"></fwb-spinner>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -82,7 +92,7 @@ import { currencyFormatter, getImgUrl } from '@/utils.js'
 import PrimaryBtn from '@/components/PrimaryBtn.vue'
 import Collections from '@/components/Collections.vue'
 import api from '@/api'
-import { FwbCarousel } from 'flowbite-vue'
+import { FwbCarousel, FwbSpinner } from 'flowbite-vue'
 
 const GET_ONE_URL = '/ww/getProductionById/'
 
@@ -93,7 +103,8 @@ export default defineComponent({
     Breadcrumbs,
     ChevronDoubleRightIcon,
     ChevronDoubleLeftIcon,
-    FwbCarousel
+    FwbCarousel,
+    FwbSpinner
   },
   data() {
     return {
@@ -163,7 +174,7 @@ export default defineComponent({
       const sorted = this.item.images.sort((a, b) => a.order - b.order)
       return sorted[index].image
     }
-  },
+  }
 })
 </script>
 

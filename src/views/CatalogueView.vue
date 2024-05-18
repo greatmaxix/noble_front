@@ -3,7 +3,7 @@
     <breadcrumbs :items="breadcrumbItems" />
     <div class="text-3xl mt-2">
       <h1 class="uppercase font-semibold py-2 hidden">
-        {{ $t($route.params.name) }}
+        {{ $t('Kurwa') }}
       </h1>
     </div>
     <div class="grid grid-cols-2 text-2xl my-3">
@@ -31,13 +31,14 @@
       </div>
       <div class="grow grid grid-cols-2 xl:grid-cols-4">
         <catalogue-item
-          v-for="item in collectionItems"
+          v-for="item in products"
           :key="item.id"
           :id="item.id"
-          :title="item.title"
+          :title="item.name"
           :description="item.description"
-          :imageUrl="item.imgSrc"
-          :price="item.price"
+          :imageUrl="item.image"
+          :price="item.oldPrice"
+          :newPrice="item.newPrice"
         >
         </catalogue-item>
       </div>
@@ -55,11 +56,38 @@ import meringa2 from '@/assets/meringa2.png'
 import CatalogueItem from '@/components/CatalogueItem.vue'
 import CatalogueFilter from '@/components/CatalogueFilter.vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import api from '@/api'
+
+const PRODUCTS_URL = '/ww/getProductions'
 
 const openFilters = ref(false)
 const { t } = useI18n()
 const route = useRoute()
+const loading = ref(false)
+const products = ref([])
+
+const getQuery = (query) => {
+  return {
+    ...query,
+    page: 1
+  }
+} 
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    const response = await api.get(PRODUCTS_URL, {
+      params: getQuery(route.query)
+    })
+
+    products.value = response.data.items
+  } catch (error) {
+    console.error('Error fetching product items:', error)
+  } finally {
+    loading.value = false
+  }
+})
 
 const collectionItems = [
   {
@@ -95,11 +123,11 @@ const breadcrumbItems = [
   {
     label: t('catalogue'),
     link: '/catalogue'
-  },
-  {
-    label: t(route.params.name),
-    link: null
   }
+  // {
+  //   label: t(route.params.name),
+  //   link: null
+  // }
 ]
 
 const brands = [

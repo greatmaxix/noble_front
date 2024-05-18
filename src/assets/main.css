@@ -105,3 +105,8 @@
 .order-lead-font {
   font-family: "Tangerine", cursive;
 }
+
+.category-dropdowns button {
+  background-color: transparent;
+  color: black;
+}

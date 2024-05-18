@@ -2,116 +2,150 @@
   <div>
     <!--  Mobile view -->
     <div class="md:hidden text-2xl">
-      <SearchButton/>
+      <SearchButton />
 
       <div class="mt-4 grid grid-cols-3 mx-4">
         <div class="flex justify-start mt-5">
-          <Bars3Icon class="h-6 cursor-pointer hover:ring-blue-500 hover:ring-2 rounded" @click="showLinks = !showLinks"/>
-          <LanguageSelector/>
+          <Bars3Icon
+            class="h-6 cursor-pointer hover:ring-blue-500 hover:ring-2 rounded"
+            @click="showLinks = !showLinks"
+          />
+          <LanguageSelector />
         </div>
         <div class="flex justify-center">
           <FwbA href="/">
-            <FwbImg
-              alt="Noble logo"
-              class="w-[125px] h-[45px]"
-              :src="noble_logo"
-            />
+            <FwbImg alt="Noble logo" class="w-[125px] h-[45px]" :src="noble_logo" />
           </FwbA>
         </div>
         <div class="w-full flex justify-end mt-5">
-          <MapPinIcon class="h-6"/>
+          <MapPinIcon class="h-6" />
           <FwbA href="/cart" class="mb-2">
-            <ShoppingBagIcon class="ml-2 h-6"/>
+            <ShoppingBagIcon class="ml-2 h-6" />
           </FwbA>
         </div>
       </div>
 
       <Transition name="link-transition">
-        <div v-if="showLinks" @close="showLinks = false"
-             :class="{ 'opacity-0': !showLinks, 'opacity-100': showLinks }"
-             class="transition-opacity duration-300 ease-in-out bg-gray-200 my-3">
-          <div class="flex flex-col text-center">
-            <FwbA
-                v-for="route in routes" :key="route.name"
-                class="rounded-xl p-1 m-1 w-full"
-                :href="`${route.route}`">
-              {{$t(route.name)}}
-            </FwbA>
-          </div>
+        <div
+          v-if="showLinks"
+          @close="showLinks = false"
+          :class="{ 'opacity-0': !showLinks, 'opacity-100': showLinks }"
+          class="transition-opacity duration-300 ease-in-out bg-gray-200 my-3"
+        >
+          <FwbAccordion>
+            <FwbAccordionPanel v-for="category in categories" :key="category.name">
+              <FwbAccordionHeader>
+                <span class="font-thin text-gray-950">
+                  {{ category.name }}
+                </span>
+              </FwbAccordionHeader>
+              <FwbAccordionContent class="text-center w-full">
+                <template v-if="category.id">
+                  <a
+                    :href="`/catalogue?categoryId=${category.id}`"
+                    class="block p-2 hover:bg-gray-100"
+                    >{{ $t('all') }}
+                  </a>
+                </template>
+                <template v-else>
+                  <a href="/catalogue" class="block p-2 hover:bg-gray-100">{{ $t('all') }}</a>
+                </template>
+                <div
+                  v-for="subCategory in category.subCategoryPojoList"
+                  :key="subCategory.id"
+                  class="p-1"
+                >
+                  <template v-if="subCategory.id">
+                    <a
+                      :href="`/category?categoryId=${subCategory.id}`"
+                      class="block p-2 hover:bg-gray-100"
+                      >{{ subCategory.name }}</a
+                    >
+                  </template>
+                  <template v-else>
+                    <a href="/catalogue" class="block p-2 hover:bg-gray-100">{{
+                      subCategory.name
+                    }}</a>
+                  </template>
+                </div>
+              </FwbAccordionContent>
+            </FwbAccordionPanel>
+          </FwbAccordion>
         </div>
       </Transition>
     </div>
     <!--  Desktop view  -->
     <div class="hidden md:block">
-
       <div class="h-10 bg-gray-950"></div>
 
       <div class="mt-4 grid grid-cols-3 mx-4">
         <div class="flex justify-start ml-10">
           <FwbA href="/">
-            <FwbImg
-              alt="Noble logo"
-              class="w-[125px] h-[45px]"
-              :src="noble_logo"
-            />
+            <FwbImg alt="Noble logo" class="w-[125px] h-[45px]" :src="noble_logo" />
           </FwbA>
         </div>
 
-        <SearchButton/>
+        <SearchButton />
 
         <div class="flex justify-end mt-5 gap-6 mr-10 mb-2">
-          <LanguageSelector/>
-          <MapPinIcon class="h-7"/>
+          <LanguageSelector />
+          <MapPinIcon class="h-7" />
           <FwbA href="/cart" class="mb-2">
-            <ShoppingBagIcon class="h-7"/>
+            <ShoppingBagIcon class="h-7" />
           </FwbA>
         </div>
       </div>
 
-      <div class="w-full flex font-bold justify-around uppercase z-40"
-           :class="{'fixed bg-white top-0': isSticky}"
+      <div
+        class="w-full flex font-bold justify-around uppercase z-40 category-dropdowns"
+        :class="{ 'fixed bg-white top-0': isSticky }"
       >
-        <FwbA
-            v-for="route in routes" :key="route.name"
-            class="rounded-xl p-1 m-1"
-            :href="`${route.route}`">
-          {{$t(route.name)}}
-        </FwbA>
+        <CategoryDropdowns :categories="categories"></CategoryDropdowns>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import {FwbA, FwbImg} from "flowbite-vue";
-import { MapPinIcon, ShoppingBagIcon, Bars3Icon } from "@heroicons/vue/24/solid";
+import {
+  FwbA,
+  FwbImg,
+  FwbAccordion,
+  FwbAccordionContent,
+  FwbAccordionHeader,
+  FwbAccordionPanel
+} from 'flowbite-vue'
+import { MapPinIcon, ShoppingBagIcon, Bars3Icon } from '@heroicons/vue/24/solid'
 import noble_logo from '@/assets/noble.png'
 
-import {onMounted, onUnmounted, ref} from 'vue'
-import SearchButton from "@/components/SearchButton.vue";
-import LanguageSelector from "@/components/LanguageSelector.vue";
+import { onMounted, onUnmounted, ref, computed } from 'vue'
+import SearchButton from '@/components/SearchButton.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
+import CategoryDropdowns from '@/components/CategoryDropdowns.vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
 let showLinks = ref(false)
-const routes = [
-    { route: '/catalogue/brands', name: 'brands' },
-    { route: '/catalogue/new_year', name: 'new_year' },
-    { route: '/catalogue/sets', name: 'sets' },
-    { route: '/catalogue/table_serve', name: 'table_serve' },
-    { route: '/catalogue/glass_and_bar', name: 'glass_and_bar' },
-    { route: '/catalogue/cutlery', name: 'cutlery' },
-    { route: '/catalogue/decor_and_interior', name: 'decor_and_interior' },
-    { route: '/catalogue/kitchenware', name: 'kitchenware' }
-];
+
+const fetchCategories = async () => {
+  if (store.state.mainStore.categories.length === 0) {
+    await store.dispatch('getCategories')
+  }
+}
+
+const categories = computed(() => store.state.mainStore.categories)
 
 let isSticky = ref(false)
 const scrollHandler = () => {
-  isSticky.value = window.scrollY > 100;
+  isSticky.value = window.scrollY > 100
 }
 
 onMounted(() => {
-  window.addEventListener("scroll", scrollHandler);
+  window.addEventListener('scroll', scrollHandler)
+  fetchCategories()
 })
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", scrollHandler);
+  window.removeEventListener('scroll', scrollHandler)
 })
-
 </script>

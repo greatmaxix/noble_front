@@ -29,7 +29,20 @@
               </template>
             </span>
           </p>
-          <PrimaryBtn class="p-4 align-bottom	 uppercase font-semibold mt-3 drop-shadow-xl">{{$t('add_to_cart')}}</PrimaryBtn>
+          <PrimaryBtn
+            v-if="!cart.find(cartItem => cartItem.id === item.id)"
+            class="p-4 align-bottom uppercase font-semibold mt-3 drop-shadow-xl"
+            @click="addToCart(item)"
+          >
+            {{$t('add_to_cart')}}
+          </PrimaryBtn>
+          <InCartButton v-else
+            class="p-4 align-bottom uppercase font-semibold mt-3 drop-shadow-xl"
+            :itemsCount="cart.filter(cartItem => cartItem.id === item.id).length"
+            @add="addToCart(item)"
+            @remove="removeFromCart(item)"
+          >
+          </InCartButton>
         </div>
       </div>
     </div>
@@ -40,11 +53,22 @@
 
 import {defineComponent} from "vue";
 import PrimaryBtn from "@/components/PrimaryBtn.vue";
+import InCartButton from "@/components/InCartButton.vue";
 import { getImgUrl, currencyFormatter } from '@/utils'
 
 export default defineComponent({
-  methods: {currencyFormatter, getImgUrl},
-  components: {PrimaryBtn},
+  methods: {
+    currencyFormatter,
+    getImgUrl,
+    addToCart(item) {
+      console.log(this.cart)
+      this.$store.commit('addToCart', item)
+    },
+    removeFromCart(item) {
+      this.$store.commit('removeSingleFromCart', item)
+    }
+  },
+  components: {PrimaryBtn, InCartButton},
   props: {
     title: {
       required: true,
@@ -55,5 +79,10 @@ export default defineComponent({
       default: []
     }
   },
+  computed: {
+    cart() {
+      return this.$store.state.mainStore.cart || []
+    },
+  }
 })
 </script>

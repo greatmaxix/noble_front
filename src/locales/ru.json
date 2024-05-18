@@ -37,5 +37,6 @@
   "main_page": "Главная страница",
   "cart": "Корзина",
   "description": "Описание",
-  "history": "История"
+  "history": "История",
+  "already_in_cart": "Уже в корзине"
 }
