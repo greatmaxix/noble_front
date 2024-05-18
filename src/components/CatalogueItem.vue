@@ -1,5 +1,5 @@
 <template>
-  <fwb-card class="m-1 xl:m-3 fwb-card shadow-2xl" :img-alt="title" :img-src="imageUrl" variant="image">
+  <fwb-card class="m-1 xl:m-3 fwb-card shadow-2xl" :img-alt="title" :img-src="getImgUrl(imageUrl)" variant="image">
     <div class="p-2 lg:p-5">
       <h5
         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 min-h-24 max-h-24 overflow-hidden dark:text-white"
@@ -31,6 +31,7 @@ import { FwbCard } from 'flowbite-vue'
 import { defineComponent } from 'vue'
 import PrimaryBtn from '@/components/PrimaryBtn.vue'
 import { ShoppingCartIcon } from '@heroicons/vue/24/outline'
+import { getImgUrl } from '@/utils'
 
 export default defineComponent({
   components: { PrimaryBtn, FwbCard, ShoppingCartIcon },
@@ -51,14 +52,16 @@ export default defineComponent({
     },
     id: {
       required: true,
-      type: Number,
-      default: 0
+      type: String,
     },
     imageUrl: {
       required: true,
       type: String,
       default: ''
     }
+  },
+  methods: {
+    getImgUrl
   }
 })
 </script>
