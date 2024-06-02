@@ -20,8 +20,13 @@
             </div>
 
             <div class="flex flex-col items-center justify-center font-light mt-3">
-              <p class="line-through text-lg">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
-              <p class="mt-1 text-2xl">{{ currencyFormatter().format(cartItem.newPrice) }}ТГ</p>
+              <template v-if="cartItem.newPrice">
+                <p class="line-through text-lg">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
+                <p class="mt-1 text-2xl">{{ currencyFormatter().format(cartItem.newPrice) }}ТГ</p>
+              </template>
+              <template v-else>
+                <p class="mt-1 text-2xl">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
+              </template>
             </div>
 
             <div class="m-2 flex flex-col items-center justify-center text-lg font-light">
@@ -61,8 +66,13 @@
             </div>
 
             <div class="flex flex-col items-center justify-center font-light">
-              <p class="line-through text-lg">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
-              <p class="mt-3 text-2xl">{{ currencyFormatter().format(cartItem.newPrice) }}ТГ</p>
+              <template v-if="cartItem.newPrice">
+                <p class="line-through text-lg">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
+                <p class="mt-3 text-2xl">{{ currencyFormatter().format(cartItem.newPrice) }}ТГ</p>
+              </template>
+              <template v-else>
+                <p class="mt-3 text-2xl">{{ currencyFormatter().format(cartItem.oldPrice) }}ТГ</p>
+              </template>
             </div>
 
             <div class="m-10 flex flex-col items-center justify-center text-lg font-light">
@@ -79,13 +89,14 @@
               {{ currencyFormatter().format(oldPriceCount) }}ТГ
             </h2>
 
-            <h2 class="text-xl font-light text-center px-4 py-2">
-
-              {{ $t('discount') }}
-            </h2>
-            <h2 class="text-xl font-light text-center px-4 py-2">
-              {{ currencyFormatter().format(newPriceCount - oldPriceCount) }}ТГ
-            </h2>
+            <template v-if="newPriceCount !== oldPriceCount">
+              <h2 class="text-xl font-light text-center px-4 py-2">
+                {{ $t('discount') }}
+              </h2>
+              <h2 class="text-xl font-light text-center px-4 py-2">
+                {{ currencyFormatter().format(newPriceCount - oldPriceCount) }}ТГ
+              </h2>
+            </template>
 
             <div class="col-span-2 border-b border-gray-650 mx-10 mt-2" />
 
@@ -100,8 +111,8 @@
               :label="$t('name')" v-validate="'required'" :placeholder="$t('enter_your_name')">
             </fwb-input>
 
-            <fwb-input class="col-span-2 m-2" v-model="createOrderForm.email" required type="email" name="email" :label="$t('email')"
-              v-validate="'required|email'" :placeholder="$t('enter_your_email')">
+            <fwb-input class="col-span-2 m-2" v-model="createOrderForm.email" required type="email" name="email"
+              :label="$t('email')" v-validate="'required|email'" :placeholder="$t('enter_your_email')">
             </fwb-input>
 
             <fwb-input class="col-span-2 m-2" v-model="createOrderForm.phone" required type="text" :label="$t('phone')"
@@ -178,7 +189,7 @@ export default defineComponent({
       return this.cartItems.reduce((total, item) => total + item.oldPrice, 0)
     },
     newPriceCount() {
-      return this.cartItems.reduce((total, item) => total + item.newPrice, 0)
+      return this.cartItems.reduce((total, item) => total + (item.newPrice ? item.newPrice : item.oldPrice), 0)
     },
     itemsWithQuantity() {
       const uniqueObjectsById = this.cartItems.reduce((acc, obj) => {

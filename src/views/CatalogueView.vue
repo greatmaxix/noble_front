@@ -25,7 +25,7 @@
       <div class="grow grid grid-cols-2 xl:grid-cols-4">
         <template v-if="products.length > 0">
           <catalogue-item v-for="item in products" :key="item.id" :id="item.id" :title="item.name"
-            :description="item.description" :imageUrl="item.image" :price="item.oldPrice" :newPrice="item.newPrice"
+            :description="item.description" :imageUrl="item.image" :oldPrice="item.oldPrice" :newPrice="item.newPrice"
             :type="item.type">
           </catalogue-item>
         </template>

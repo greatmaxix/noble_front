@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen">
+  <div class="h-[300px] md:h-[400px]">
     <Transition name="link-transition" mode="out-in">
       <router-link
         v-if="currentProduct"

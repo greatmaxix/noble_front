@@ -1,7 +1,7 @@
 <template>
   <div>
     <Transition name="link-transition" mode="out-in" v-if="item">
-      <div class="md:px-10 my-5 mx-1">
+      <div class="md:px-10 my-5 mx-1 mb-20">
         <breadcrumbs :items="breadcrumbItems" />
         <div class="grid grid-cols-1 md:grid-cols-2">
           <div>

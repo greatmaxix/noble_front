@@ -1,7 +1,7 @@
 <template>
-  <div class="flex items-center justify-between flex-nowrap text-nowrap w-4/5">
-    <div v-for="category in categories" :key="category.name" class="relative rounded-xl p-1 m-1">
-      <button @click="toggleDropdown(category.name)" class="text-left w-full uppercase">
+  <div class="overflow-x-auto no-scrollbar flex flex-nowrap items-center justify-between flex-nowrap text-nowrap w-4/5">
+    <div v-for="category in categories" :key="category.name" class="relative rounded-xl p-1 m-1 w-100px">
+      <button @focus="toggleDropdown(category)" tabindex="0" class="text-left w-full uppercase">
         {{ category.name }}
       </button>
       <div
@@ -64,11 +64,20 @@ export default defineComponent({
     }
   },
   methods: {
-    toggleDropdown(categoryName) {
+    toggleDropdown(category) {
+      if (category.id) {
+        window.location = `/catalogue?categoryId=${category.id}`
+        return
+      }
+
       if (Object.keys(this.dropdowns).length > 0) {
         this.dropdowns = {}
       }
-      this.dropdowns[categoryName] = !this.dropdowns[categoryName]
+      this.dropdowns[category.name] = !this.dropdowns[category.name]
+    },
+    closeDropdowns() {
+      
+      this.dropdowns = {}
     }
   }
 })

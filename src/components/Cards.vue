@@ -1,5 +1,5 @@
 <template>
-  <div class="relative lg:px-10 my-5">
+  <div class="relative lg:px-10 my-20">
     <div class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar">
       <div class="gap-3 grid grid-cols-2">
         <div
@@ -16,7 +16,7 @@
                 <img
                   :class="{
                     'card-image': true,
-                    'h-[560px] lg:h-[1000px]': item.order === 1,
+                    'h-[460px] lg:h-[600px]': item.order === 1,
                     'h-[280px] lg:h-[560px]': item.order > 1
                   }"
                   :src="getImgUrl(item.image)"

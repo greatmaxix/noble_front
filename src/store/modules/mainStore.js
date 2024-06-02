@@ -34,7 +34,7 @@ const mainStore = {
             state.cart.push(payload)
         },
         removeAllFromCart(state, payload) {
-            state.cart = state.cart.filter(item => item.id !== payload.id)
+            state.cart = []
         },
         removeSingleFromCart(state, payload) {
             const firstIndex = state.cart.findIndex(item => item.id === payload.id)

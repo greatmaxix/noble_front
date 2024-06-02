@@ -2,7 +2,7 @@
   <div v-if="!loading">
     <div v-for="item in getOrderedItems()" :key="`item-${item.pageOrder}`">
       <template v-if="item.type === 'CARDS'">
-        <Cards :productions="item.productions" />
+        <Cards :productions="item.productions"/>
       </template>
       <template v-else-if="item.type === 'MAIN'">
         <Carousel :productions="item.productions" />

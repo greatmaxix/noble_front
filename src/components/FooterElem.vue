@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-950 font-light">
+  <div class="bg-gray-950 font-light py-20">
     <div class="md:grid md:grid-cols-4 gap-2">
       <div class="md:hidden">
         <button type="button" class="text-gray-300 mt-3 flex w-50 mx-auto uppercase font-thin py-2"

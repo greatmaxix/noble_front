@@ -1,22 +1,23 @@
 <template>
-  <div class="relative my-5">
-    <h2 class="text-3xl lg:text-6xl uppercase font-thin text-center ml-2 md:ml-10 mb-2">
+  <div class="relative my-20">
+    <h2 class="text-3xl lg:text-6xl uppercase font-thin text-center md:ml-10 mb-5">
       {{title}}
     </h2>
-    <div class="overflow-x-auto flex flex-nowrap items-start lg:justify-center w-full no-scrollbar">
-      <div v-for="item in items" :key="item.id" class="w-[300px] lg:w-[500px] h-full flex-none py-4 px-4 md:px-10">
+    <div class="overflow-x-auto flex flex-nowrap items-start lg:justify-around w-full no-scrollbar py-5">
+      <div v-for="item in items" :key="item.id"
+      class="w-[252px] lg:w-[352px] h-full flex-none py-4 px-4 md:px-10 hover:drop-shadow-2xl hover:border-2">
         <router-link :to="`/product/${item.id}/${item.type}`">
           <img
-            class="h-[300px] lg:h-[500px] card-image"
+            class="h-[320px] lg:h-[420px] card-image"
             :src="getImgUrl(item.image)"
             :alt="item.name"
           />
         </router-link>
         <div class="flex flex-col whitespace-nowrap truncate">
-          <p class="font-light text-3xl text-center">
+          <p class="font-light text-xl text-center my-3">
             {{item.name}}
           </p>
-          <p class="text-center font-light text-3xl">
+          <p class="text-center font-light text-xl">
             <span class="">
               <template v-if="item.newPrce">
                 <span class="line-through">
