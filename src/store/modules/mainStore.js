@@ -11,20 +11,21 @@ const mainStore = {
     getters: {
         cart: state => state.cart,
         cartItemsById: (state) => (id) => {
-            return state.cart.filter(item => item.id == id) 
+            return state.cart.filter(item => item.id == id)
         },
         categories: state => state.categories,
-        catBrands: state => state.categories.find(el => el.name === 'Бренды').subCategoryPojoList
+        catBrands: state => state.categories.find(el => el.name === 'Бренды')?.subCategoryPojoList || null,
+        parentCategories: state => state.categories.filter(el => (el && !el.subCategoryPojoList) || (el && el.subCategoryPojoList && el.subCategoryPojoList.length <= 0)),
     },
 
     actions: {
-        async getCategories({commit}) {
+        async getCategories({ commit }) {
             try {
                 const response = await api.get(CATEGORIES_URL)
                 commit('setCategories', response.data)
-              } catch (error) {
+            } catch (error) {
                 console.error('Error fetching categories:', error)
-              }
+            }
         }
     },
 

@@ -8,7 +8,6 @@
       <p v-for="item in items" :key="item.key" class="py-2">
         <template v-if="item.href">
           <FwbA
-              target="_blank"
               :href="item.href"
           >
             {{$t(item.key)}}

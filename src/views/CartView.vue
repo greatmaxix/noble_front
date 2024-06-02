@@ -157,6 +157,8 @@ export default defineComponent({
       api.post(CREATE_ORDER_URL, {
         ...this.createOrderForm,
         items: this.itemsWithQuantity
+      }).then((response) => {
+        window.location = response.data.url
       })
     }
   },

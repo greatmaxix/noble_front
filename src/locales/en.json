@@ -57,5 +57,7 @@
   "phone": "Phone Number",
   "enter_your_phone": "Enter your phone number",
   "address": "Address",
-  "enter_your_address": "Enter your address"
+  "enter_your_address": "Enter your address",
+  "all": "All",
+  "payment_success": "Thank you for choosing us. Your payment was successful. Our staff will contact you soon."
 }

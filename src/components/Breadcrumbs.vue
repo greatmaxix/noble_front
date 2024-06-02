@@ -1,5 +1,5 @@
 <template>
-  <fwb-breadcrumb class="font-thin md:mx-5 md:text-3xl">
+  <fwb-breadcrumb class="font-thin text-2xl mx-3 md:mx-5 md:text-3xl">
     <FwbA href="/">
       {{$t('main_page')}}
     </FwbA>

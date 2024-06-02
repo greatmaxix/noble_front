@@ -4,6 +4,7 @@ import CatalogueView from '@/views/CatalogueView.vue'
 import ProductView from "@/views/ProductView.vue";
 import CartView from "@/views/CartView.vue";
 import OrderView from "@/views/OrderView.vue";
+import PaymentSuccess from "@/views/PaymentSuccess.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/order/:id',
       name: 'order',
       component: OrderView
+    },
+    {
+      path: '/payment-success',
+      name: 'paymentSuccess',
+      component: PaymentSuccess
     }
   ],
   scrollBehavior (to, from, savedPosition) {
