@@ -7,11 +7,7 @@
       </h1>
     </div>
     <div class="grid grid-cols-2 text-2xl my-3">
-      <button
-        type="button"
-        class="flex w-50 mx-auto uppercase py-2 lg:hidden"
-        v-on:click="openFilters = !openFilters"
-      >
+      <button type="button" class="flex w-50 mx-auto uppercase py-2 lg:hidden" v-on:click="openFilters = !openFilters">
         <AdjustmentsHorizontalIcon class="h-4 mt-1.5 mr-1" />
         {{ $t('filters') }}
       </button>
@@ -22,32 +18,32 @@
     </div>
     <div class="flex">
       <div class="flex=none">
-        <catalogue-filter
-          :isOpen="openFilters"
-          @closeModal="openFilters = !openFilters"
-          :brands="brands"
-        >
+        <catalogue-filter :isOpen="openFilters" @closeModal="openFilters = !openFilters" @applyFilters="applyFilters"
+          :brands="$store.getters.catBrands">
         </catalogue-filter>
       </div>
       <div class="grow grid grid-cols-2 xl:grid-cols-4">
-        <catalogue-item
-          v-for="item in products"
-          :key="item.id"
-          :id="item.id"
-          :title="item.name"
-          :description="item.description"
-          :imageUrl="item.image"
-          :price="item.oldPrice"
-          :newPrice="item.newPrice"
-        >
-        </catalogue-item>
+        <template v-if="products.length > 0">
+          <catalogue-item v-for="item in products" :key="item.id" :id="item.id" :title="item.name"
+            :description="item.description" :imageUrl="item.image" :price="item.oldPrice" :newPrice="item.newPrice"
+            :type="item.type">
+          </catalogue-item>
+        </template>
+        <template v-else>
+          <div class="w-full h-[300px] col-span-4 flex items-center justify-center">
+            <h1 class="text-5xl uppercase font-thin mx-auto text-center">{{$t('products_not_found')}}</h1>
+          </div>
+        </template>
       </div>
     </div>
+
+    <fwb-pagination class="mx-auto py-2" v-model="currentPage" :total-pages="maxPage" :show-labels="false" show-icons
+      @page-changed="changePage"></fwb-pagination>
   </div>
 </template>
 
 <script setup>
-import { FwbBreadcrumb, FwbBreadcrumbItem } from 'flowbite-vue'
+import { FwbBreadcrumb, FwbBreadcrumbItem, FwbPagination } from 'flowbite-vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { AdjustmentsHorizontalIcon, Bars3BottomRightIcon } from '@heroicons/vue/24/solid/index.js'
@@ -66,15 +62,22 @@ const { t } = useI18n()
 const route = useRoute()
 const loading = ref(false)
 const products = ref([])
+const maxPage = ref(1)
+const currentPage = ref(1)
 
 const getQuery = (query) => {
   return {
     ...query,
-    page: 1
+    page: query.page || 1
   }
-} 
+}
 
-onMounted(async () => {
+const changePage = () => {
+  route.query.page = currentPage.value
+  fetchProducts()
+}
+
+const fetchProducts = async () => {
   loading.value = true
   try {
     const response = await api.get(PRODUCTS_URL, {
@@ -82,74 +85,32 @@ onMounted(async () => {
     })
 
     products.value = response.data.items
+    maxPage.value = response.data.maxPage
   } catch (error) {
-    console.error('Error fetching product items:', error)
+    products.value = []
+    maxPage.value = 1
   } finally {
     loading.value = false
   }
+}
+
+onMounted(async () => {
+  // todo apply query to component
+  currentPage.value = route.query.page || 1
+
+  await fetchProducts()
 })
 
-const collectionItems = [
-  {
-    id: 1,
-    brand: 'Brandani',
-    description: 'Столовый сервиз на 12 персон',
-    title: 'Brandani Meringa',
-    price: 195200,
-    oldPrice: 244000,
-    imgSrc: meringa
-  },
-  {
-    id: 2,
-    brand: 'Brandani',
-    description: 'Столовый сервиз на 12 персон Meringa',
-    title: 'Brandani Meringa',
-    price: 195200,
-    oldPrice: 244000,
-    imgSrc: meringa2
-  },
-  {
-    id: 3,
-    brand: 'Brandani',
-    description: 'Столовый сервиз на 12 персон Meringa',
-    title: 'Brandani Meringa',
-    price: 195200,
-    oldPrice: 244000,
-    imgSrc: meringa2
-  }
-]
+const applyFilters = (query) => {
+  console.log("Here is query", query)
+  fetchProducts()
+}
 
 const breadcrumbItems = [
   {
     label: t('catalogue'),
     link: '/catalogue'
   }
-  // {
-  //   label: t(route.params.name),
-  //   link: null
-  // }
 ]
 
-const brands = [
-  { id: 1, name: 'Acer' },
-  { id: 2, name: 'Bentley' },
-  { id: 3, name: 'Casio' },
-  { id: 4, name: 'Dell' },
-  { id: 5, name: 'Elle' },
-  { id: 6, name: 'Fujitsu' },
-  { id: 7, name: 'Gucci' },
-  { id: 8, name: 'Honda' },
-  { id: 9, name: 'Ibanez' },
-  { id: 10, name: 'Jaguar' },
-  { id: 11, name: 'Kia' },
-  { id: 12, name: 'Lexus' },
-  { id: 13, name: 'Maserati' },
-  { id: 14, name: 'Nike' },
-  { id: 15, name: 'Oakley' },
-  { id: 16, name: 'Porsche' },
-  { id: 17, name: 'Quiksilver' },
-  { id: 18, name: 'Rolex' },
-  { id: 19, name: 'Samsung' },
-  { id: 20, name: 'Toshiba' }
-]
 </script>

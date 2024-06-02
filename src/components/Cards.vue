@@ -58,7 +58,7 @@ export default defineComponent({
   },
   methods: {
     handleMoreInfoClick(item) {
-      this.$router.push({ name: 'product', params: { id: item.id } })
+      this.$router.push({ name: 'product', params: { id: item.id, type: item.type || 'SINGLE' } })
     },
     getImgUrl,
   }

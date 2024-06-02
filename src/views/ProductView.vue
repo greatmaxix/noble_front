@@ -5,34 +5,19 @@
         <breadcrumbs :items="breadcrumbItems" />
         <div class="grid grid-cols-1 md:grid-cols-2">
           <div>
-            <FwbCarousel
-              class="carousel w-100 my-3"
-              :pictures="carouselImages"
-              :slide="false"
-              :slide-interval="15000"
-              animation
-            >
+            <FwbCarousel class="carousel w-100 my-3" :pictures="carouselImages" :slide="false" :slide-interval="15000"
+              animation>
             </FwbCarousel>
             <div class="hidden md:block mt-3">
-              <div
-                ref="imageContainer"
-                class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar"
-              >
+              <div ref="imageContainer" class="overflow-x-auto flex flex-nowrap items-start w-full no-scrollbar">
                 <div v-for="(pic, index) in item.images" :key="pic" class="flex-none">
-                  <img
-                    class="card-image cursor-pointer w-[200px] h-[100px] p-1"
-                    :src="getImgUrl(pic.image)"
-                    :alt="item.name"
-                    @click="imageIndex = index"
-                  />
+                  <img class="card-image cursor-pointer w-[200px] h-[100px] p-1" :src="getImgUrl(pic.image)"
+                    :alt="item.name" @click="imageIndex = index" />
                 </div>
               </div>
             </div>
           </div>
-          <div
-            id="info-container"
-            class="flex flex-col md:mx-5 text-center md:text-start text-lg md:w-3/4 md:ml-auto"
-          >
+          <div id="info-container" class="flex flex-col md:mx-5 text-center md:text-start text-lg md:w-3/4 md:ml-auto">
             <h1 class="font-thin text-2xl md:text-3xl">
               {{ item.name }}
             </h1>
@@ -48,9 +33,7 @@
             <p class="my-4 self-center text-4xl">
               <template v-if="item.newPice">
                 <span>
-                  <span class="line-through"
-                    >{{ currencyFormatter().format(item.oldPrice) }}тг</span
-                  >
+                  <span class="line-through">{{ currencyFormatter().format(item.oldPrice) }}тг</span>
                   | {{ currencyFormatter().format(item.price) }}тг
                 </span>
               </template>
@@ -58,9 +41,14 @@
                 <span> {{ currencyFormatter().format(item.oldPrice) }}тг </span>
               </template>
             </p>
-            <PrimaryBtn class="p-4 align-bottom uppercase self-center font-semibold mt-3 xl:w-2/3">
+            <PrimaryBtn v-if="!cart.find(cartItem => cartItem.id === item.id)"
+              class="p-4 align-bottom uppercase font-semibold mt-3 drop-shadow-xl" @click="addToCart(item)">
               {{ $t('add_to_cart') }}
             </PrimaryBtn>
+            <InCartButton v-else class="p-4 align-bottom uppercase font-semibold mt-3 drop-shadow-xl"
+              :itemsCount="cart.filter(cartItem => cartItem.id === item.id).length" @add="addToCart(item)"
+              @remove="removeFromCart(item)">
+            </InCartButton>
 
             <div class="my-5 border-t-2 border-b-2 font-semibold border-gray-950 p-1">
               {{ $t('history') }}
@@ -70,17 +58,13 @@
             </p>
           </div>
         </div>
-        <Collections
-          v-if="item.productions"
-          class="my-10"
-          :title="collectionItems[0].title"
-          :items="collectionItems[0].items"
-        />
+        <Collections v-if="item.productions" class="my-10" :title="collectionItems[0].title"
+          :items="collectionItems[0].items" />
       </div>
     </Transition>
     <div v-else class="flex items-center justify-center p-10 h-screen">
-    <fwb-spinner size="12" color="gray"></fwb-spinner>
-  </div>
+      <fwb-spinner size="12" color="gray"></fwb-spinner>
+    </div>
   </div>
 </template>
 
@@ -93,6 +77,7 @@ import PrimaryBtn from '@/components/PrimaryBtn.vue'
 import Collections from '@/components/Collections.vue'
 import api from '@/api'
 import { FwbCarousel, FwbSpinner } from 'flowbite-vue'
+import InCartButton from "@/components/InCartButton.vue";
 
 const GET_ONE_URL = '/ww/getProductionById/'
 
@@ -104,7 +89,8 @@ export default defineComponent({
     ChevronDoubleRightIcon,
     ChevronDoubleLeftIcon,
     FwbCarousel,
-    FwbSpinner
+    FwbSpinner,
+    InCartButton
   },
   data() {
     return {
@@ -133,7 +119,10 @@ export default defineComponent({
           alt: this.item.name + el.order
         }
       })
-    }
+    },
+    cart() {
+      return this.$store.state.mainStore.cart || []
+    },
   },
   mounted() {
     try {
@@ -173,6 +162,12 @@ export default defineComponent({
 
       const sorted = this.item.images.sort((a, b) => a.order - b.order)
       return sorted[index].image
+    },
+    addToCart(item) {
+      this.$store.commit('addToCart', item)
+    },
+    removeFromCart(item) {
+      this.$store.commit('removeSingleFromCart', item)
     }
   }
 })

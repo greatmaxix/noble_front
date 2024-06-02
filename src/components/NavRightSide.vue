@@ -128,9 +128,7 @@ const store = useStore()
 let showLinks = ref(false)
 
 const fetchCategories = async () => {
-  if (store.state.mainStore.categories.length === 0) {
-    await store.dispatch('getCategories')
-  }
+  await store.dispatch('getCategories')
 }
 
 const categories = computed(() => store.state.mainStore.categories)

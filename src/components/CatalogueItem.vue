@@ -13,7 +13,7 @@
       <div class="grid grid-flow-col justify-stretch mt-2">
         <PrimaryBtn
           class="p-3 uppercase font-semibold mt-3"
-          @click="$router.push({ name: 'product', params: { id: id } })"
+          @click="$router.push({ name: 'product', params: { id: id, type: type || 'SINGLE' } })"
         >
           {{ $t('more_info') }}
         </PrimaryBtn>
@@ -58,6 +58,10 @@ export default defineComponent({
       required: true,
       type: String,
       default: ''
+    },
+    type: {
+      type: String,
+      default: null
     }
   },
   methods: {

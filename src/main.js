@@ -7,6 +7,7 @@ import router from '@/router'
 import { createI18n } from 'vue-i18n';
 import ru from '@/locales/ru.json';
 import en from '@/locales/en.json';
+import kz from '@/locales/kz.json';
 import store from '@/store'
 
 const localeFromLocalStorage = localStorage.getItem('locale');
@@ -16,7 +17,8 @@ const i18n = createI18n({
     locale: localeFromLocalStorage || 'ru',
     messages: {
         ru,
-        en
+        en,
+        kz
     }
 });
 

@@ -12,12 +12,13 @@ const mainStore = {
         cart: state => state.cart,
         cartItemsById: (state) => (id) => {
             return state.cart.filter(item => item.id == id) 
-        } 
+        },
+        categories: state => state.categories,
+        catBrands: state => state.categories.find(el => el.name === 'Бренды').subCategoryPojoList
     },
 
     actions: {
         async getCategories({commit}) {
-            console.log('getCategories')
             try {
                 const response = await api.get(CATEGORIES_URL)
                 commit('setCategories', response.data)

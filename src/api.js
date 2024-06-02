@@ -10,7 +10,9 @@ let config = {
 const instance = axios.create(config)
 
 instance.interceptors.request.use(function (config) {
-    let locale = localStorage.getItem('lang')
+    let locale = localStorage.getItem('locale')
+    
+    console.log(locale)
 
     if (!locale || locale === 'null' || locale === 'undefined') {
         locale = 'ru'

@@ -5,64 +5,44 @@
     </button>
     <h2 class="text-2xl uppercase text-center mb-4">{{ $t('filters') }}</h2>
     <hr class="font-bold" />
-    <div class="text-2xl font-thin my-5">
-      <fwb-checkbox v-model="filters.discount">
-        {{ $t('discount') }}
-      </fwb-checkbox>
-    </div>
     <div class="mt-5">
       <h3 class="font-thin mb-2">{{ $t('price') }}</h3>
       <div class="grid grid-cols-2 gap-2">
-        <fwb-input
-          class="rounded"
-          v-model="filters.price.min"
-          type="number"
-          :label="$t('min_price')"
-          :placeholder="filters.price.min"
-          size="lg"
-        />
-        <fwb-input
-          class="rounded"
-          v-model="filters.price.max"
-          type="number"
-          :label="$t('max_price')"
-          :placeholder="filters.price.max"
-          size="lg"
-        />
+        <fwb-input class="rounded" v-model="filters.price.min" type="number" :label="$t('min_price')"
+          :placeholder="filters.price.min" size="lg" />
+        <fwb-input class="rounded" v-model="filters.price.max" type="number" :label="$t('max_price')"
+          :placeholder="filters.price.max" size="lg" />
       </div>
     </div>
     <div class="mt-5">
       <h3 class="font-thin mb-2">{{ $t('brands') }}</h3>
-      <fwb-input
-        v-model="brands_query"
-        :label="$t('search_brands')"
-        :placeholder="$t('start_typing')"
-        size="lg"
-      />
+      <fwb-input v-model="brands_query" :label="$t('search_brands')" :placeholder="$t('start_typing')" size="lg" />
       <div class="h-64 lg:h-64 overflow-y-auto mt-5">
-        <fwb-checkbox
-          v-for="brand in Object.values(filters.brands)"
-          :key="brand.id"
-          v-model="filters.brands[brand.id].selected"
-        >
+        <fwb-radio v-for="brand in Object.values(filters.brands)" :key="brand.id" :value="brand.id"
+          v-model="filters.selectedBrand">
           {{ brand.name }}
-        </fwb-checkbox>
+        </fwb-radio>
       </div>
     </div>
+    <PrimaryBtn class="p-3 w-full uppercase font-semibold mt-3" @click="applyFilters()">
+      {{ $t('apply') }}
+    </PrimaryBtn>
   </div>
 </template>
 
 <script>
 import { defineComponent, reactive } from 'vue'
-import { FwbCheckbox, FwbInput } from 'flowbite-vue'
+import { FwbRadio, FwbInput } from 'flowbite-vue'
 import { XMarkIcon } from '@heroicons/vue/24/solid/index.js'
+import PrimaryBtn from '@/components/PrimaryBtn.vue'
 
 export default defineComponent({
   name: 'Filter',
   components: {
     XMarkIcon,
-    FwbCheckbox,
-    FwbInput
+    FwbRadio,
+    FwbInput,
+    PrimaryBtn
   },
   props: {
     brands: {
@@ -77,9 +57,10 @@ export default defineComponent({
         discount: false,
         price: {
           min: 0,
-          max: 9999999
+          max: 0
         },
-        brands: {}
+        brands: {},
+        selectedBrand: null
       },
       brands_query: ''
     }
@@ -100,6 +81,25 @@ export default defineComponent({
     this.setBrands(this.brands)
   },
   methods: {
+    applyFilters() {
+      let query = this.$route.query
+
+      if (this.filters.selectedBrand) {
+        query.brandId = this.filters.selectedBrand
+      }
+
+      if (this.filters.price.min) {
+        query.minPrice = this.filters.price.min
+      }
+
+      if (this.filters.price.max) {
+        query.maxPrice = this.filters.price.max
+      }
+
+      query.page = 1
+
+      this.$emit('applyFilters', query)
+    },
     setBrands(brands) {
       // Create a new object to hold the filtered brands
       const updatedBrands = {}
