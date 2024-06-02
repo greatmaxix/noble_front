@@ -1,6 +1,6 @@
 <template>
-  <div class="overflow-x-auto no-scrollbar flex flex-nowrap items-center justify-between flex-nowrap text-nowrap w-4/5">
-    <div v-for="category in categories" :key="category.name" class="relative rounded-xl p-1 m-1 w-100px">
+  <div class="flex flex-nowrap items-center justify-between flex-nowrap text-nowrap w-full 2xl:w-4/5">
+    <div v-for="category in categories" :key="category.name" class="relative rounded-xl m-1">
       <button @focus="toggleDropdown(category)" tabindex="0" class="text-left w-full uppercase">
         {{ category.name }}
       </button>

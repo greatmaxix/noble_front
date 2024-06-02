@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--  Mobile view -->
-    <div class="md:hidden text-2xl">
+    <div class="xl:hidden text-2xl">
       <SearchButton />
 
       <div class="mt-4 grid grid-cols-3 mx-4">
@@ -63,7 +63,7 @@
       </Transition>
     </div>
     <!--  Desktop view  -->
-    <div class="hidden md:block">
+    <div class="hidden xl:block">
       <div class="h-10 bg-gray-950"></div>
 
       <div class="mt-4 grid grid-cols-3 mx-4">
